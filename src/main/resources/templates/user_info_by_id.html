@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Найденный пользователь</title>
+</head>
+<body>
+<div>
+    <form th:action="@{/logout}" method="post">
+        <input type="submit" value="Выйти">
+    </form>
+    <hr/>
+    <table border="2">
+        <tr>
+            <th>Id</th>
+            <th>Имя</th>
+            <th>Фамилия</th>
+            <th>Возраст</th>
+            <th>Электронная почта</th>
+            <th>Роль</th>
+
+        </tr>
+        <tr>
+            <td th:text="${user.getId()}">Id</td>
+            <td th:text="${user.getName()}">Имя</td>
+            <td th:text="${user.getLastName()}">Фамилия</td>
+            <td th:text="${user.getAge()}">Возраст</td>
+            <td th:text="${user.getEmail()}">Почтовый ящик</td>
+            <td th:text="${user.getRoles()}">Роль</td>
+        </tr>
+    </table>
+    <br>
+    <form th:action="@{/admin/users/{id}/edit(id=${user.id})}" th:object="${user}">
+        <button style="background: mintcream" type="submit">Изменить</button>
+    </form>
+    <br>
+    <form th:method="DELETE" th:action="@{/admin/users/{id}/delete(id=${user.id})}">
+        <input type="hidden" name="id" th:value="${user.id}">
+        <button style="background: moccasin" type="submit" value="Delete">Удалить</button>
+    </form>
+    <br/>
+    <form th:action="@{/admin}">
+        <button type="submit">Назад к списку пользователей</button>
+    </form>
+</div>
+</body>
+</html>

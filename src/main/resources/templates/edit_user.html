@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Изменить пользователя</title>
+</head>
+<body>
+<h2>Изменить пользователя</h2>
+<div>
+
+    <form th:action="@{/logout}" method="post">
+        <input type="submit" value="Выйти">
+    </form>
+    <br/>
+    <form th:method="PATCH" th:action="@{/admin/users/{id}/edit(id=${user.getId()})}" th:object="${user}">
+        <fieldset>
+            <legend>Данные пользователя</legend>
+            <p>
+                <label th:for="name">Имя</label>
+                <input type="text" name="name" th:id="name" th:value="${user.getName()}">
+            </p>
+            <p>
+                <label th:for="lastName">Фамилия</label>
+                <input type="text" name="lastName" th:id="lastName" th:value="${user.getLastName()}"><br/>
+            </p>
+            <p>
+                <label th:for="age">Возраст</label>
+                <input type="number" name="age" th:id="age" th:value="${user.getAge()}"><br/>
+            </p>
+            <p>
+                <label th:for="email">Электронная почта</label>
+                <input type="text" name="email" th:id="email" th:value="${user.getEmail()}"><br/>
+            </p>
+            <p>
+                <label th:for="password">Пароль</label>
+                <input type="password" name="password" th:id="password"><br/>
+            </p>
+            <p>
+                <label>
+                    <select size="3" multiple="multiple" name="roles" id="roles">
+                        <option disabled>Roles:</option>
+                        <option value="ROLE_ADMIN">ADMIN</option>
+                        <option selected value="ROLE_USER">USER</option>
+                    </select>
+                </label>
+            </p>
+        </fieldset>
+        <button style="background: lightgray" type="submit">Изменить данные</button>
+    </form>
+
+    <br/>
+    <form th:action="@{/admin/users}">
+        <button style="background: lightgray" type="submit">Назад к списку пользователей</button>
+    </form>
+</div>
+</body>
+</html>
