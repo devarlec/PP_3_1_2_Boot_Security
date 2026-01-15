@@ -12,7 +12,7 @@
         <input type="submit" value="Выйти">
     </form>
     <br/>
-    <form th:method="PATCH" th:action="@{/admin/users/{id}/edit(id=${user.getId()})}" th:object="${user}">
+    <form th:method="POST" th:action="@{/admin/users/{id}/edit(id=${user.getId()})}" th:object="${user}">
         <fieldset>
             <legend>Данные пользователя</legend>
             <p>
@@ -39,8 +39,12 @@
                 <label>
                     <select size="3" multiple="multiple" name="roles" id="roles">
                         <option disabled>Roles:</option>
-                        <option value="ROLE_ADMIN">ADMIN</option>
-                        <option selected value="ROLE_USER">USER</option>
+
+                        <option th:each="role : ${roles}"
+                                th:value="${role.name}"
+                                th:text="${role.name == 'ROLE_ADMIN' ? 'ADMIN' : 'USER'}"
+                                th:selected="${#lists.contains(user.roles, role)}">
+                        </option>
                     </select>
                 </label>
             </p>

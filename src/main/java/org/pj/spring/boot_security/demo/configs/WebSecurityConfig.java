@@ -1,7 +1,10 @@
 package org.pj.spring.boot_security.demo.configs;
 
+import org.pj.spring.boot_security.demo.service.UserServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -18,14 +21,14 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 public class WebSecurityConfig {
 
     private final AuthenticationSuccessHandler successUserHandler;
-    private final UserDetailsService userDetailsService;
+    private final UserServiceImpl userServiceImpl;
     private final PasswordEncoder passwordEncoder;
 
     public WebSecurityConfig(AuthenticationSuccessHandler successUserHandler,
-                             UserDetailsService userDetailsService,
+                             UserServiceImpl userServiceImpl,
                              PasswordEncoder passwordEncoder) {
         this.successUserHandler = successUserHandler;
-        this.userDetailsService = userDetailsService;
+        this.userServiceImpl = userServiceImpl;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -35,14 +38,13 @@ public class WebSecurityConfig {
         provider.setPasswordEncoder(passwordEncoder);
 
         provider.setPreAuthenticationChecks(userDetails -> {
-            System.out.println("=== PASSWORD CHECK ===");
+            System.out.println("=== PASSWORD CHECK IN CONFIG ===");
             System.out.println("Username from login form: " + userDetails.getUsername());
-            System.out.println("Password from login form: [HIDDEN]");
             System.out.println("Stored password hash: " + userDetails.getPassword());
         });
 
-        provider.setUserDetailsService(userDetailsService);
-        provider.setHideUserNotFoundExceptions(false);
+        provider.setUserDetailsService(userServiceImpl);
+        provider.setHideUserNotFoundExceptions(false);  //запрещает скрывать исключение, когда пользователь не найден. Чтоб его посмотреть
         return provider;
     }
 

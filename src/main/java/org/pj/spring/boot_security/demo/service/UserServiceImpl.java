@@ -25,23 +25,62 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private boolean passwordEncoderEnabled;
 
     @Autowired
-    public UserServiceImpl(UserDao userDao, @Lazy PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserDao userDao, PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
         this.userDao = userDao;
     }
 
     @Override
     public void updateUser(User user) {
+
         User existingUser = getUserById(user.getId());
 
-        // Проверяем, изменился ли пароль
-        if (!user.getPassword().equals(existingUser.getPassword())) {
-            // Кодируем пароль только если он изменился
-            if (passwordEncoderEnabled && !passwordEncoder.matches(user.getPassword(), existingUser.getPassword())) {
-                user.setPassword(passwordEncoder.encode(user.getPassword()));
+        // Сохраняем существующие роли, если в переданном пользователе роли не заданы
+        if (user.getRoles() == null || user.getRoles().isEmpty()) {
+            user.setRoles(existingUser.getRoles());
+        }
+
+        // Обработка пароля: если поле пароля пустое, оставляем старый пароль
+        if (user.getPassword() == null || user.getPassword().trim().isEmpty()) {
+            // Устанавливаем старый пароль
+            user.setPassword(existingUser.getPassword());
+        } else {
+            // Проверяем, изменился ли пароль
+            String newPassword = user.getPassword();
+            String existingPassword = existingUser.getPassword();
+
+            // Если пароль изменился и кодирование включено, кодируем новый пароль
+            if (passwordEncoderEnabled) {
+                // Сравниваем хеши, если старый пароль уже закодирован
+                if (!passwordEncoder.matches(newPassword, existingPassword)) {
+                    user.setPassword(passwordEncoder.encode(newPassword));
+                } else {
+                    // Пароль не изменился, оставляем старый
+                    user.setPassword(existingPassword);
+                }
+            } else {
+                // Если кодирование отключено, просто проверяем строковое равенство
+                if (!newPassword.equals(existingPassword)) {
+                    user.setPassword(newPassword);
+                } else {
+                    user.setPassword(existingPassword);
+                }
             }
         }
+
+        // Обновляем пользователя
         userDao.updateUser(user);
+
+//        User existingUser = getUserById(user.getId());
+//
+//        // Проверяем, изменился ли пароль
+//        if (!user.getPassword().equals(existingUser.getPassword())) {
+//            // Кодируем пароль только если он изменился
+//            if (passwordEncoderEnabled && !passwordEncoder.matches(user.getPassword(), existingUser.getPassword())) {
+//                user.setPassword(passwordEncoder.encode(user.getPassword()));
+//            }
+//        }
+//        userDao.updateUser(user);
     }
 
     public User getUserByEmail(String email) {
@@ -89,3 +128,4 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return user;
     }
 }
+

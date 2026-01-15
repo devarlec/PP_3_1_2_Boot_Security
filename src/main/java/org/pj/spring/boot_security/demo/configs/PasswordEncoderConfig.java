@@ -22,11 +22,10 @@ public class PasswordEncoderConfig {
             return new BCryptPasswordEncoder(bcryptStrength) {
                 @Override
                 public boolean matches(CharSequence rawPassword, String encodedPassword) {
-                    System.out.println("=== PASSWORD MATCHING ===");
+                    System.out.println("=== PASSWORD MATCHING IN ENCODER ===");
                     System.out.println("Raw password: " + rawPassword);
                     System.out.println("Encoded Raw password: " + encode(rawPassword));
                     System.out.println("Encoded password from DB: " + encodedPassword);
-
                     boolean result = super.matches(rawPassword, encodedPassword);
                     System.out.println("Match result: " + result);
 
