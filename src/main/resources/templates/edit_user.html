@@ -26,23 +26,24 @@
             <legend>Данные пользователя</legend>
             <p>
                 <label th:for="name">Имя</label>
-                <input type="text" name="name" th:id="name" th:value="${user.getName()}">
+                <input type="text" th:field="*{name}" th:id="name">
             </p>
             <p>
                 <label th:for="lastName">Фамилия</label>
-                <input type="text" name="lastName" th:id="lastName" th:value="${user.getLastName()}"><br/>
+                <input type="text" th:field="*{lastName}" th:id="lastName">
+
             </p>
             <p>
                 <label th:for="age">Возраст</label>
-                <input type="number" name="age" th:id="age" th:value="${user.getAge()}"><br/>
+                <input type="number" th:field="*{age}" th:id="age">
             </p>
             <p>
                 <label th:for="email">Электронная почта</label>
-                <input type="text" name="email" th:id="email" th:value="${user.getEmail()}"><br/>
+                <input type="text" th:field="*{email}" th:id="email">
             </p>
             <p>
                 <label th:for="password">Пароль</label>
-                <input type="password" name="password" th:id="password"><br/>
+                <input type="password" th:field="*{password}" th:id="password">
             </p>
             <p>
                 <label>

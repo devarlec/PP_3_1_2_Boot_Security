@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
@@ -89,7 +90,7 @@ public class AdminController {
     }
 
     @PostMapping("users/{id}/edit")
-    public String update(@ModelAttribute("user") User user
+    public String update(@Valid @ModelAttribute("user") User user
             , BindingResult bindingResult  //объект с результатами присваивания
             , @RequestParam(value = "roles") String[] roles
             , Model model) {
@@ -97,8 +98,12 @@ public class AdminController {
         // ПРОВЕРЯЕМ ЕСТЬ ЛИ ОШИБКИ
         if (bindingResult.hasErrors()) {
             // ЕСЛИ ЕСТЬ ОШИБКИ - ВОЗВРАЩАЕМСЯ НА ФОРМУ
+            // Сохраняем выбранные роли, если они были
+            if (roles != null) {
+                user.setRoles(roleService.getSetOfRoles(roles));
+            }
             model.addAttribute("roles", roleService.getAllRoles());
-            return "users/{id}/edit"; // не redirect, а return на ту же страницу
+            return "edit_user"; // не redirect, а return на ту же страницу
         }
 
         // ЕСЛИ ОШИБОК НЕТ - ОБНОВЛЯЕМ
