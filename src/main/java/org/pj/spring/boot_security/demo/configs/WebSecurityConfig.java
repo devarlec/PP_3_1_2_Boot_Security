@@ -3,16 +3,13 @@ package org.pj.spring.boot_security.demo.configs;
 import org.pj.spring.boot_security.demo.service.UserServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 @Configuration
@@ -38,6 +35,7 @@ public class WebSecurityConfig {
         provider.setPasswordEncoder(passwordEncoder);
 
         provider.setPreAuthenticationChecks(userDetails -> {
+            //смотрим какие логин и хешированный пароль у пользователя
             System.out.println("=== PASSWORD CHECK IN CONFIG ===");
             System.out.println("Username from login form: " + userDetails.getUsername());
             System.out.println("Stored password hash: " + userDetails.getPassword());

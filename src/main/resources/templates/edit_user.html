@@ -13,6 +13,15 @@
     </form>
     <br/>
     <form th:method="POST" th:action="@{/admin/users/{id}/edit(id=${user.getId()})}" th:object="${user}">
+
+        <!-- ЭТОТ БЛОК ПОКАЗЫВАЕТ ВСЕ ОШИБКИ СРАЗУ -->
+        <div th:if="${#fields.hasErrors('*')}" style="color: red; border: 1px solid red; padding: 10px;">
+            <h4>Исправьте ошибки:</h4>
+            <ul>
+                <li th:each="error : ${#fields.errors('*')}" th:text="${error}"></li>
+            </ul>
+        </div>
+
         <fieldset>
             <legend>Данные пользователя</legend>
             <p>
@@ -38,11 +47,9 @@
             <p>
                 <label>
                     <select size="3" multiple="multiple" name="roles" id="roles">
-                        <option disabled>Roles:</option>
-
                         <option th:each="role : ${roles}"
-                                th:value="${role.name}"
-                                th:text="${role.name == 'ROLE_ADMIN' ? 'ADMIN' : 'USER'}"
+                                th:value="${role}"
+                                th:text="${role}"
                                 th:selected="${#lists.contains(user.roles, role)}">
                         </option>
                     </select>

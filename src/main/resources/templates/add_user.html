@@ -12,6 +12,15 @@
     </form>
     <br>
     <form method="POST" th:action="@{/admin/users/add}" th:object="${user}">
+
+        <!-- ЭТОТ БЛОК ПОКАЗЫВАЕТ ВСЕ ОШИБКИ СРАЗУ -->
+        <div th:if="${#fields.hasErrors('*')}" style="color: red; border: 1px solid red; padding: 10px;">
+            <h4>Исправьте ошибки:</h4>
+            <ul>
+                <li th:each="error : ${#fields.errors('*')}" th:text="${error}"></li>
+            </ul>
+        </div>
+
         <fieldset>
             <legend>Данные пользователя</legend>
             <label for="name">Enter name</label>
@@ -30,10 +39,12 @@
             <input type="password" th:field="*{password}" id="password"/>
             </p>
             <label>
-                <select size="3" multiple="multiple" name="roles" id="roles">
-                    <option disabled>Roles:</option>
-                    <option value="ROLE_ADMIN">ADMIN</option>
-                    <option selected value="ROLE_USER">USER</option>
+                <select size="3" multiple="multiple" name="roles">
+                    <option th:each="role : ${roles}"
+                            th:value="${role}"
+                            th:text="${role}"
+                            th:selected="${role.toString() == 'ROLE_USER'}">
+                    </option>
                 </select>
             </label>
             </p>
@@ -43,9 +54,7 @@
     </form>
     <br/>
     <form th:action="@{/admin}">
-        <button style="background: lightgray" type="submit" class="btn btn-outline-danger">Назад к списку
-            пользователей
-        </button>
+        <button style="background: lightgray" type="submit">Назад к списку пользователей</button>
     </form>
 </div>
 </body>

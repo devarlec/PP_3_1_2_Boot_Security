@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 public class PasswordEncoderConfig {
@@ -20,6 +20,7 @@ public class PasswordEncoderConfig {
     public PasswordEncoder passwordEncoder() {
         if (passwordEncoderEnabled) {
             return new BCryptPasswordEncoder(bcryptStrength) {
+                // просто проверка в консоли, что пароли сравниваются нормально
                 @Override
                 public boolean matches(CharSequence rawPassword, String encodedPassword) {
                     System.out.println("=== PASSWORD MATCHING IN ENCODER ===");
@@ -33,6 +34,7 @@ public class PasswordEncoderConfig {
                 }
             };
         } else {
+            // если отключено кодирование паролей
             System.out.println("=== PASSWORD ENCODER DISABLED - USING NOOP ===");
             return NoOpPasswordEncoder.getInstance();
         }

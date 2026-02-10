@@ -7,12 +7,15 @@ import java.util.List;
 
 @Repository
 public interface UserDao {
-   User getUserByEmail(String email);
-   void addUser(User user);
+    User getUserByEmail(String email);
 
-   User getUserById(Long id);
-   void updateUser(User user);
+    void addUser(User user);
 
-   void removeUserById(Long id);
-   List<User> listUsers();
+    User getUserById(Long id);
+
+    void updateUser(User user);
+
+    void removeUserById(Long id);
+
+    List<User> listUsers();
 }

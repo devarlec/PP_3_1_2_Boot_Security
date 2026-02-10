@@ -5,15 +5,15 @@ import org.pj.spring.boot_security.demo.model.Role;
 import java.util.Set;
 
 public interface RoleDao {
-    public Set<Role> getAllRoles();
+    Set<Role> getAllRoles();
 
-    public Role getRoleByName(String name);
+    Role getRoleByName(String name);
 
-    public Set<Role> getSetOfRoles(String[] roleNames);
+    Set<Role> getSetOfRoles(String[] roleNames);
 
-    public void add(Role role);
+    void add(Role role);
 
-    public void edit(Role role);
+    void edit(Role role);
 
-    public Role getById(Long id);
+    Role getById(Long id);
 }

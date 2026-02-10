@@ -4,7 +4,6 @@ import org.pj.spring.boot_security.demo.dao.UserDao;
 import org.pj.spring.boot_security.demo.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -33,6 +32,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public void updateUser(User user) {
 
+        //получаем изменяемого юзера из базы по id
         User existingUser = getUserById(user.getId());
 
         // Сохраняем существующие роли, если в переданном пользователе роли не заданы
@@ -70,17 +70,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         // Обновляем пользователя
         userDao.updateUser(user);
-
-//        User existingUser = getUserById(user.getId());
-//
-//        // Проверяем, изменился ли пароль
-//        if (!user.getPassword().equals(existingUser.getPassword())) {
-//            // Кодируем пароль только если он изменился
-//            if (passwordEncoderEnabled && !passwordEncoder.matches(user.getPassword(), existingUser.getPassword())) {
-//                user.setPassword(passwordEncoder.encode(user.getPassword()));
-//            }
-//        }
-//        userDao.updateUser(user);
     }
 
     public User getUserByEmail(String email) {
@@ -111,6 +100,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return userDao.listUsers();
     }
 
+    //проверка получаемого закодированного пароля из базы
+    //это переопределенный метод из интерфейса UserDetailsService
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         System.out.println("=== LOGIN ATTEMPT ===");

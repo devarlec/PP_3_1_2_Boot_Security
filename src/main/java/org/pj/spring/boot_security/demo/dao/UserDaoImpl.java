@@ -3,10 +3,10 @@ package org.pj.spring.boot_security.demo.dao;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
+import org.pj.spring.boot_security.demo.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
-import org.pj.spring.boot_security.demo.model.User;
 
 import java.util.List;
 
